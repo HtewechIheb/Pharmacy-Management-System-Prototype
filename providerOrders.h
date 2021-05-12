@@ -21,9 +21,10 @@ public:
     ~ProviderOrders() { };
     ProviderOrders(std::list<ProviderOrder>);
     void display();
-    void add(Providers, Medicines);
+    void deliver(Medicines&);
+    void add(Providers);
     void search(Providers);
-    void edit(Providers, Medicines);
+    void edit(Providers);
     void remove();
     void readFromFile();
     void writeToFile();

@@ -57,9 +57,11 @@ int main()
     meds.display();
 
     ProviderOrders proOrds;
-    proOrds.add(pros, meds);
+    proOrds.add(pros);
     proOrds.display();
-    proOrds.search(pros);
+    proOrds.deliver(meds);
+    meds.display();
+    //proOrds.search(pros);
     //meds.display();
     //meds.add();
     /*meds.display();

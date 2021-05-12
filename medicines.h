@@ -25,9 +25,11 @@ public:
     void search();
     void edit();
     void remove();
+    long generateId();
     void readFromFile();
     void writeToFile();
 
+    void add(Medicine);
     Medicine* findByName(std::string);
 };
 

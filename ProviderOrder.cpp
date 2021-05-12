@@ -19,7 +19,7 @@ void ProviderOrder::display(){
 
 }
 
-void ProviderOrder::scan(Providers providers, Medicines medicinesList){
+void ProviderOrder::scan(Providers providers){
     long providerId;
     Provider* provider;
     std::string answer;
@@ -30,11 +30,8 @@ void ProviderOrder::scan(Providers providers, Medicines medicinesList){
 
     std::cout << "  Medicines: ";
     do{
-        do{
-            std::cout << "      Medicine Name: ";
-            std::cin >> medicineEntry.first;
-        }
-        while(medicinesList.findByName(medicineEntry.first) == nullptr);
+        std::cout << "      Medicine Name: ";
+        std::cin >> medicineEntry.first;
         std::cout << "      Quantity: ";
         std::cin >> medicineEntry.second;
         this->medicines.insert(this->medicines.end(), medicineEntry);
@@ -54,6 +51,25 @@ void ProviderOrder::scan(Providers providers, Medicines medicinesList){
     }
     while(provider == nullptr);
     this->provider = *provider;
+}
+
+void ProviderOrder::deliver(Medicines& medicinesList){
+    Medicine medicine;
+
+    if(this->delivered){
+        return;
+    }
+
+    for(std::map<std::string, int>::iterator iter = this->medicines.begin(); iter != this->medicines.end(); iter++){
+        medicine.setName(iter->first);
+        medicine.deliveryScan();
+        for(int i = 0; i < iter->second; i++){
+            medicine.setId(medicinesList.generateId());
+            medicinesList.add(medicine);
+        }
+    }
+
+    this->delivered = true;
 }
 
 long ProviderOrder::getId(){

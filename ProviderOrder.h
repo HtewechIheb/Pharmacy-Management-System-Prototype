@@ -30,7 +30,8 @@ public:
     ~ProviderOrder() { };
     ProviderOrder(Provider, std::map<std::string, int>, bool);
     void display();
-    void scan(Providers, Medicines);
+    void scan(Providers);
+    void deliver(Medicines& medicines);
 
     long getId();
     Provider getProvider();

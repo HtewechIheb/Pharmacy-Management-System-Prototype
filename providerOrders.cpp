@@ -19,9 +19,23 @@ void ProviderOrders::display(){
     std::cout << "-------------------------------------" << std::endl;
 }
 
-void ProviderOrders::add(Providers providers, Medicines medicinesList){
+void ProviderOrders::deliver(Medicines& medicines){
+    long id;
+    std::list<ProviderOrder>::iterator providerOrder;
+
+    std::cout << "  Order ID: ";
+    do{
+        std::cin >> id;
+        providerOrder = std::find_if(this->providerOrders.begin(), this->providerOrders.end(), [=](ProviderOrder currentProviderOrder) { return currentProviderOrder.getId() == id;});
+    }
+    while(providerOrder == this->providerOrders.end());
+
+    providerOrder->deliver(medicines);
+}
+
+void ProviderOrders::add(Providers providers){
     ProviderOrder providerOrder;
-    providerOrder.scan(providers, medicinesList);
+    providerOrder.scan(providers);
     this->providerOrders.push_back(providerOrder);
     std::cout << "  Provider order successfully added!" << std::endl;
 }
@@ -130,11 +144,11 @@ void ProviderOrders::search(Providers providers){
     std::cout << "-------------------------------" << std::endl;
 }
 
-void ProviderOrders::edit(Providers providers, Medicines medicinesList){
+void ProviderOrders::edit(Providers providers){
     ProviderOrder providerOrder;
     std::list<ProviderOrder>::iterator iter;
 
-    providerOrder.scan(providers, medicinesList);
+    providerOrder.scan(providers);
 
     iter = std::find_if(this->providerOrders.begin(), this->providerOrders.end(),
         [&providerOrder](ProviderOrder currentProviderOrder){

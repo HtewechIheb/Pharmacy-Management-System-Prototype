@@ -76,6 +76,7 @@ public:
     Medicine(std::string, Type, Category, double, std::time_t, std::time_t);
     void display();
     void scan();
+    void deliveryScan();
 
     long getId();
     std::string getName();

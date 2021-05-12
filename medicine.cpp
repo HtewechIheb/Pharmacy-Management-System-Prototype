@@ -98,6 +98,23 @@ void Medicine::scan(){
     this->consumptionDelay = dateScan();
 }
 
+void Medicine::deliveryScan(){
+    MedicineEnumMaps medicineEnumMaps;
+
+    std::cout << "Medicine Name: " << this->name << std::endl;
+    std::cout << "Fill in the rest of the details: " << std::endl;
+    std::cout << "Medicine Type: " << std::endl;
+    this->type = enumScan<Type>(medicineEnumMaps.getTypeMap());
+    std::cout << "Medicine Category: " << std::endl;
+    this->category = enumScan<Category>(medicineEnumMaps.getCategoryMap());
+    std::cout << "Medicine Price: " << std::endl;
+    std::cin >> this->price;
+    std::cout << "Medicine Creation Date: " << std::endl;
+    this->creationDate = dateScan();
+    std::cout << "Medicine Consumption Delay: " << std::endl;
+    this->consumptionDelay = dateScan();
+}
+
 long Medicine::getId(){
     return this->id;
 }

@@ -204,6 +204,21 @@ Medicine* Medicines::findByName(std::string name){
     return nullptr;
 }
 
+long Medicines::generateId(){
+    long id = 0;
+    for(std::list<Medicine>::iterator iter = this->medicines.begin(); iter != this->medicines.end(); iter++){
+        if(iter->getId() > id){
+            id = iter->getId();
+        }
+    }
+
+    return id + 1;
+}
+
+void Medicines::add(Medicine medicine){
+    this->medicines.push_back(medicine);
+}
+
 void Medicines::readFromFile(){
     std::ifstream file;
     file.open("medicines.bin", std::ifstream::in | std::ifstream::binary);
