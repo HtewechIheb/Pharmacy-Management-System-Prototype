@@ -26,15 +26,6 @@ void Providers::add(){
     std::cout << "  Provider successfully added!" << std::endl;
 }
 
-Provider* find(int id){
-    std::list<Provider>::iterator iter;
-    iter = std::find(this->providers.begin(), this->providers.end(), id);
-    if(iter != this->providers.end()){
-        return &(*iter);
-    }
-    return nullptr;
-}
-
 void Providers::search(){
     std::string answer;
     Provider searchedProvider;
@@ -156,6 +147,15 @@ void Providers::remove(){
     );
 
     std::cout << "  Provider successfully deleted!" << std::endl;
+}
+
+Provider* Providers::findById(long id){
+    std::list<Provider>::iterator iter;
+    iter = std::find_if(this->providers.begin(), this->providers.end(), [=](Provider provider) { return provider.getId() == id; });
+    if(iter != this->providers.end()){
+        return &(*iter);
+    }
+    return nullptr;
 }
 
 void Providers::readFromFile(){

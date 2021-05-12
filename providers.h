@@ -28,7 +28,7 @@ public:
     void readFromFile();
     void writeToFile();
 
-    Provider* find(long);
+    Provider* findById(long);
 };
 
 #endif // PROVIDERS_H

@@ -1,12 +1,16 @@
 # depslib dependency file v1.0
-1620772988 source:g:\engineering\c++\tp6\pharmacymanagementsystem\main.cpp
+1620835214 source:g:\engineering\c++\tp6\pharmacymanagementsystem\main.cpp
 	<iostream>
 	<ctime>
 	<algorithm>
 	"medicine.h"
 	"medicines.h"
+	"provider.h"
+	"providers.h"
+	"providerOrder.h"
+	"providerOrders.h"
 
-1620775099 g:\engineering\c++\tp6\pharmacymanagementsystem\medicines.h
+1620827353 g:\engineering\c++\tp6\pharmacymanagementsystem\medicines.h
 	<list>
 	<string>
 	<boost/archive/text_oarchive.hpp>
@@ -14,7 +18,7 @@
 	<boost/serialization/list.hpp>
 	"medicine.h"
 
-1620823391 source:g:\engineering\c++\tp6\pharmacymanagementsystem\medicines.cpp
+1620832485 source:g:\engineering\c++\tp6\pharmacymanagementsystem\medicines.cpp
 	<iostream>
 	<algorithm>
 	<cctype>
@@ -7960,7 +7964,7 @@
 1620823462 g:\engineering\c++\tp6\pharmacymanagementsystem\general.h
 	<string>
 
-1620823450 source:g:\engineering\c++\tp6\pharmacymanagementsystem\providers.cpp
+1620831772 source:g:\engineering\c++\tp6\pharmacymanagementsystem\providers.cpp
 	<iostream>
 	<algorithm>
 	<cctype>
@@ -7969,7 +7973,7 @@
 	"general.h"
 	"providers.h"
 
-1620782074 g:\engineering\c++\tp6\pharmacymanagementsystem\providers.h
+1620828037 g:\engineering\c++\tp6\pharmacymanagementsystem\providers.h
 	<list>
 	<string>
 	<boost/archive/text_oarchive.hpp>
@@ -7979,4 +7983,57 @@
 
 1620823408 source:g:\engineering\c++\tp6\pharmacymanagementsystem\general.cpp
 	"general.h"
+
+1620831864 g:\engineering\c++\tp6\pharmacymanagementsystem\providerorder.h
+	<map>
+	"general.h"
+	"provider.h"
+	"providers.h"
+	"medicines.h"
+	<boost/archive/text_oarchive.hpp>
+	<boost/archive/text_iarchive.hpp>
+	<boost/serialization/map.hpp>
+
+1620835205 g:\engineering\c++\tp6\pharmacymanagementsystem\providerorders.h
+	<list>
+	<string>
+	<boost/archive/text_oarchive.hpp>
+	<boost/archive/text_iarchive.hpp>
+	<boost/serialization/list.hpp>
+	"providerOrder.h"
+
+1620832722 source:g:\engineering\c++\tp6\pharmacymanagementsystem\providerorder.cpp
+	<iostream>
+	"providerOrder.h"
+
+1620783299 c:\boost\include\boost-1_66\boost\serialization\map.hpp
+	<map>
+	<boost/config.hpp>
+	<boost/archive/detail/basic_iarchive.hpp>
+	<boost/serialization/access.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/item_version_type.hpp>
+	<boost/serialization/detail/stack_constructor.hpp>
+	<boost/serialization/utility.hpp>
+	<boost/serialization/collections_save_imp.hpp>
+	<boost/serialization/split_free.hpp>
+	<boost/move/utility_core.hpp>
+
+1620783300 c:\boost\include\boost-1_66\boost\serialization\utility.hpp
+	<utility>
+	<boost/config.hpp>
+	<boost/type_traits/remove_const.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/is_bitwise_serializable.hpp>
+	<boost/mpl/and.hpp>
+
+1620835231 source:g:\engineering\c++\tp6\pharmacymanagementsystem\providerorders.cpp
+	<iostream>
+	<algorithm>
+	<cctype>
+	<fstream>
+	"providerOrder.h"
+	"general.h"
+	"providerOrders.h"
 

@@ -1,11 +1,19 @@
 #include <map>
+#include "general.h"
 #include "provider.h"
 #include "providers.h"
+#include "medicines.h"
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/map.hpp>
+
+#ifndef PROVIDER_ORDER_H
+#define PROVIDER_ORDER_H
 
 class ProviderOrder {
     long id;
     Provider provider;
-    std::map<string, int> medicines;
+    std::map<std::string, int> medicines;
     bool delivered;
 
 public:
@@ -13,24 +21,26 @@ public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version){
         ar & id;
-        ar & providerId;
+        ar & provider;
         ar & medicines;
         ar & delivered;
     }
 
     ProviderOrder() { };
     ~ProviderOrder() { };
-    ProviderOrder(Provider, std::map<string, int>, bool);
+    ProviderOrder(Provider, std::map<std::string, int>, bool);
     void display();
-    void scan();
+    void scan(Providers, Medicines);
 
     long getId();
     Provider getProvider();
-    std::map<string, int> getMedicines();
-    std::string getDelivered();
+    std::map<std::string, int> getMedicines();
+    bool getDelivered();
 
     void setId(long);
     void setProvider(Provider);
-    void setMedicines(std::map<string, int>);
-    void setDelivered(std::string);
-}
+    void setMedicines(std::map<std::string, int>);
+    void setDelivered(bool);
+};
+
+#endif // PROVIDER_ORDER_H

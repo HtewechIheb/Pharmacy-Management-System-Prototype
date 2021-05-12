@@ -195,9 +195,13 @@ void Medicines::remove(){
     std::cout << "  Medicine successfully deleted!" << std::endl;
 }
 
-Medicine* findByName(std::string name){
+Medicine* Medicines::findByName(std::string name){
     std::list<Medicine>::iterator iter;
-    iter = std::find_if(this->medicines.begin(), this->medicines.end(), [name](Medicine medicine) {return medicine.getName() == name});
+    iter = std::find_if(this->medicines.begin(), this->medicines.end(), [name](Medicine medicine) {return str_tolower(medicine.getName()) == str_tolower(name);});
+    if(iter != this->medicines.end()){
+        return &(*iter);
+    }
+    return nullptr;
 }
 
 void Medicines::readFromFile(){
