@@ -1,5 +1,8 @@
 # Pharmacy-Management-System-Prototype
-C++ console application prototype for a pharmacy management system.
+
+About:
+    C++ console application prototype for a pharmacy management system.
+
 Dependencies:
     - Boost Serialization Library: 
         Documentation: https://www.boost.org/doc/libs/1_76_0/libs/serialization/doc/index.html
