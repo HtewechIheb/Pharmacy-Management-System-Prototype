@@ -33,9 +33,10 @@ public:
     void search(Providers);
     void edit(Providers);
     void remove();
+    //
+
     void readFromFile();
     void writeToFile();
-    //
 
     long generateId();
     void removeByProvider(long);

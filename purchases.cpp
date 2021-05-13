@@ -10,7 +10,7 @@ Purchases::Purchases(std::list<Purchase> purchases){
 }
 
 void Purchases::display(){
-    std::cout << "======== All Purchases ========" << std::endl;
+    std::cout << "======== All Purchases ========" << std::endl << std::endl;
     for(std::list<Purchase>::iterator iter = this->purchases.begin(); iter != this->purchases.end(); iter++){
         iter->display();
         std::cout << std::endl;
@@ -23,7 +23,7 @@ void Purchases::add(Medicines& medicinesList){
     purchase.scan(medicinesList);
     purchase.setId(this->generateId());
     this->purchases.push_back(purchase);
-    std::cout << "  Purchase successfully added!" << std::endl;
+    std::cout << "Purchase successfully added!" << std::endl;
 }
 
 void Purchases::search(){
@@ -33,7 +33,7 @@ void Purchases::search(){
     double total;
     std::time_t date;
 
-    std::cout << "  Search by ID ? (Y/N): ";
+    std::cout << "Search by ID ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -48,7 +48,7 @@ void Purchases::search(){
         id = -1;
     }
 
-    std::cout << "  Search by medicine ? (Y/N): ";
+    std::cout << "Search by medicine ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -56,14 +56,15 @@ void Purchases::search(){
     while(answer != "y" && answer != "n");
     if(answer == "y"){
         std::cout << "  Medicine name: ";
-        std::cin >> answer;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(std::cin, answer);
         medicineName = answer;
     }
     else{
         medicineName = "";
     }
 
-    std::cout << "  Search by total ? (Y/N): ";
+    std::cout << "Search by total ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -78,7 +79,7 @@ void Purchases::search(){
         total = -1;
     }
 
-    std::cout << "  Search by date ? (Y/N): ";
+    std::cout << "Search by date ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -116,7 +117,7 @@ void Purchases::search(){
         iter++;
     }
 
-    std::cout << "======== Search Results ========" << std::endl;
+    std::cout << "======== Search Results ========" << std::endl << std::endl;
     for(std::list<Purchase>::iterator iter = result.begin(); iter != result.end(); iter++){
         iter->display();
         std::cout << std::endl;
@@ -132,15 +133,18 @@ void Purchases::edit(Medicines& medicinesList){
     Medicine* medicine;
     double total;
 
-    std::cout << "  Purchase ID: ";
+    this->display();
+    std::cout << "Purchase ID: ";
     std::cin >> id;
+
     iter = std::find_if(this->purchases.begin(), this->purchases.end(),
         [&](Purchase purchase) {
             return id == purchase.getId();
         }
     );
+
     if(iter == this->purchases.end()){
-        std::cout << "  Purchase does not exist!" << std::endl;
+        std::cout << "Purchase does not exist!" << std::endl;
     }
     else{
         purchaseMedicines = iter->getMedicines();
@@ -159,7 +163,7 @@ void Purchases::edit(Medicines& medicinesList){
             while(medicine == nullptr);
             iter->addMedicine(*medicine);
             medicinesList.remove(std::stoi(answer, nullptr, 10));
-            std::cout << "  Add another medicine ? (Y/N): ";
+            std::cout << "Add another medicine ? (Y/N): ";
             std::cin >> answer;
             answer = str_tolower(answer);
         }
@@ -171,7 +175,7 @@ void Purchases::edit(Medicines& medicinesList){
         }
         iter->setTotal(total);
 
-        std::cout << "  Purchase successfully modified!" << std::endl;
+        std::cout << "Purchase successfully modified!" << std::endl;
     }
 }
 
@@ -181,7 +185,8 @@ void Purchases::remove(Medicines& medicinesList){
     std::list<Purchase>::iterator iter;
     std::list<Medicine> purchaseMedicines;
 
-    std::cout << "  Purchase ID: ";
+    this->display();
+    std::cout << "Purchase ID: ";
     std::cin >> id;
     iter = std::find_if(this->purchases.begin(), this->purchases.end(),
         [&](Purchase purchase) {
@@ -190,12 +195,12 @@ void Purchases::remove(Medicines& medicinesList){
     );
 
     if(iter == this->purchases.end()){
-        std::cout << "  Purchase does not exist!" << std::endl;
+        std::cout << "Purchase does not exist!" << std::endl;
     }
     else{
         purchaseMedicines = iter->getMedicines();
         do{
-            std::cout << "  Return medicines to storage ? (Y/N):";
+            std::cout << "Return medicines to storage ? (Y/N):";
             std::cin >> answer;
             answer = str_tolower(answer);
         }
@@ -208,7 +213,7 @@ void Purchases::remove(Medicines& medicinesList){
 
         this->purchases.erase(iter);
 
-        std::cout << "  Purchase successfully deleted!" << std::endl;
+        std::cout << "Purchase successfully deleted!" << std::endl;
     }
 }
 

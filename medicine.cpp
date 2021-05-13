@@ -56,15 +56,14 @@ void Medicine::display(){
 void Medicine::scan(){
     MedicineEnumMaps medicineEnumMaps;
 
-    std::cout << "Medicine ID: " << std::endl;
-    std::cin >> this->id;
-    std::cout << "Medicine Name: " << std::endl;
-    std::cin >> this->name;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "Medicine Name: ";
+    std::getline(std::cin, this->name);
     std::cout << "Medicine Type: " << std::endl;
     this->type = enumScan<Type>(medicineEnumMaps.getTypeMap());
     std::cout << "Medicine Category: " << std::endl;
     this->category = enumScan<Category>(medicineEnumMaps.getCategoryMap());
-    std::cout << "Medicine Price: " << std::endl;
+    std::cout << "Medicine Price: ";
     std::cin >> this->price;
     std::cout << "Medicine Creation Date: " << std::endl;
     this->creationDate = dateScan();
@@ -89,8 +88,8 @@ T enumScan(std::map<T, std::string> Tmap){
 void Medicine::deliveryScan(){
     MedicineEnumMaps medicineEnumMaps;
 
-    std::cout << "Medicine Name: " << this->name << std::endl;
-    std::cout << "Fill in the rest of the details: " << std::endl;
+    std::cout << "Medicine Name: " << this->name << std::endl << std::endl;
+    std::cout << "Fill in the rest of the details: " << std::endl << std::endl;
     std::cout << "Medicine Type: " << std::endl;
     this->type = enumScan<Type>(medicineEnumMaps.getTypeMap());
     std::cout << "Medicine Category: " << std::endl;

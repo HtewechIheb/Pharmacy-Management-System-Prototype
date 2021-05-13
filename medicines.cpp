@@ -15,7 +15,7 @@ void Medicines::display(){
         iter->display();
         std::cout << std::endl;
     }
-    std::cout << "-------------------------------" << std::endl;
+    std::cout << "-------------------------------" << std::endl << std::endl;
 }
 
 void Medicines::add(){
@@ -23,7 +23,7 @@ void Medicines::add(){
     medicine.scan();
     medicine.setId(this->generateId());
     this->medicines.push_back(medicine);
-    std::cout << "  Medicine successfully added!" << std::endl;
+    std::cout << "Medicine successfully added!" << std::endl;
 }
 
 void Medicines::search(){
@@ -31,7 +31,7 @@ void Medicines::search(){
     std::string answer;
     Medicine searchedMedicine;
 
-    std::cout << "  Search by ID ? (Y/N): ";
+    std::cout << "Search by ID ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -46,7 +46,7 @@ void Medicines::search(){
         searchedMedicine.setId(-1);
     }
 
-    std::cout << "  Search by name ? (Y/N): ";
+    std::cout << "Search by name ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -54,14 +54,15 @@ void Medicines::search(){
     while(answer != "y" && answer != "n");
     if(answer == "y"){
         std::cout << "  Medicine name: ";
-        std::cin >> answer;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(std::cin, answer);
         searchedMedicine.setName(answer);
     }
     else{
         searchedMedicine.setName("");
     }
 
-    std::cout << "  Search by type ? (Y/N): ";
+    std::cout << "Search by type ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -75,7 +76,7 @@ void Medicines::search(){
         searchedMedicine.setType(Type::NONE);
     }
 
-    std::cout << "  Search by category ? (Y/N): ";
+    std::cout << "Search by category ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -89,7 +90,7 @@ void Medicines::search(){
         searchedMedicine.setCategory(Category::NONE);
     }
 
-    std::cout << "  Search by price ? (Y/N): ";
+    std::cout << "Search by price ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -104,7 +105,7 @@ void Medicines::search(){
         searchedMedicine.setPrice(-1);
     }
 
-    std::cout << "  Search by creation date ? (Y/N): ";
+    std::cout << "Search by creation date ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -118,7 +119,7 @@ void Medicines::search(){
         searchedMedicine.setCreationDate(static_cast<time_t>(-1));
     }
 
-    std::cout << "  Search by consumption delay ? (Y/N): ";
+    std::cout << "Search by consumption delay ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -152,7 +153,7 @@ void Medicines::search(){
         iter++;
     }
 
-    std::cout << "======== Search Results ========" << std::endl;
+    std::cout << "======== Search Results ========" << std::endl << std::endl;
     for(std::list<Medicine>::iterator iter = result.begin(); iter != result.end(); iter++){
         iter->display();
         std::cout << std::endl;
@@ -161,31 +162,13 @@ void Medicines::search(){
 }
 
 void Medicines::edit(){
+    long id;
     Medicine medicine;
     std::list<Medicine>::iterator iter;
 
-    medicine.scan();
+    this->display();
 
-    iter = std::find_if(this->medicines.begin(), this->medicines.end(),
-        [&](Medicine currentMedicine){
-            return currentMedicine.getId() == medicine.getId();
-        }
-    );
-
-    if(iter == this->medicines.end()){
-        std::cout << "  Medicine does not exist!" << std::endl;
-    }
-    else{
-        *iter = medicine;
-        std::cout << "  Medicine successfully modified!" << std::endl;
-    }
-}
-
-void Medicines::remove(){
-    long id;
-    std::list<Medicine>::iterator iter;
-
-    std::cout << "  Medicine ID: ";
+    std::cout << "Medicine ID: ";
     std::cin >> id;
 
     iter = std::find_if(this->medicines.begin(), this->medicines.end(),
@@ -195,12 +178,37 @@ void Medicines::remove(){
     );
 
     if(iter == this->medicines.end()){
-        std::cout << "  Medicine does not exist!" << std::endl;
+        std::cout << "Medicine does not exist!" << std::endl;
+    }
+    else{
+        medicine.setId(id);
+        medicine.scan();
+        *iter = medicine;
+        std::cout << "Medicine successfully modified!" << std::endl;
+    }
+}
+
+void Medicines::remove(){
+    long id;
+    std::list<Medicine>::iterator iter;
+
+    this->display();
+    std::cout << "Medicine ID: ";
+    std::cin >> id;
+
+    iter = std::find_if(this->medicines.begin(), this->medicines.end(),
+        [&](Medicine currentMedicine){
+            return currentMedicine.getId() == id;
+        }
+    );
+
+    if(iter == this->medicines.end()){
+        std::cout << "Medicine does not exist!" << std::endl;
     }
     else{
         this->medicines.erase(iter);
 
-        std::cout << "  Medicine successfully deleted!" << std::endl;
+        std::cout << "Medicine successfully deleted!" << std::endl;
     }
 }
 

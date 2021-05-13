@@ -16,14 +16,13 @@ void Provider::display(){
 }
 
 void Provider::scan(){
-    std::cout << "Provider ID: " << std::endl;
-    std::cin >> this->id;
-    std::cout << "Provider Name: " << std::endl;
-    std::cin >> this->name;
-    std::cout << "Provider Phone: " << std::endl;
-    std::cin >> this->phone;
-    std::cout << "Provider Address: " << std::endl;
-    std::cin >> this->address;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "Provider Name: ";
+    std::getline(std::cin, this->name);
+    std::cout << "Provider Phone: ";
+    std::getline(std::cin, this->phone);
+    std::cout << "Provider Address: ";
+    std::getline(std::cin, this->address);
 }
 
 long Provider::getId(){

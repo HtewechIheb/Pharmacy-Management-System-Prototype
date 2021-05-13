@@ -10,7 +10,7 @@ Providers::Providers(std::list<Provider> providers){
 }
 
 void Providers::display(){
-    std::cout << "======== All Providers ========" << std::endl;
+    std::cout << "======== All Providers ========" << std::endl << std::endl;
     for(std::list<Provider>::iterator iter = this->providers.begin(); iter != this->providers.end(); iter++){
         iter->display();
         std::cout << std::endl;
@@ -23,14 +23,14 @@ void Providers::add(){
     provider.scan();
     provider.setId(this->generateId());
     this->providers.push_back(provider);
-    std::cout << "  Provider successfully added!" << std::endl;
+    std::cout << "Provider successfully added!" << std::endl;
 }
 
 void Providers::search(){
     std::string answer;
     Provider searchedProvider;
 
-    std::cout << "  Search by ID ? (Y/N): ";
+    std::cout << "Search by ID ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -45,7 +45,7 @@ void Providers::search(){
         searchedProvider.setId(-1);
     }
 
-    std::cout << "  Search by name ? (Y/N): ";
+    std::cout << "Search by name ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -53,14 +53,15 @@ void Providers::search(){
     while(answer != "y" && answer != "n");
     if(answer == "y"){
         std::cout << "  Provider name: ";
-        std::cin >> answer;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(std::cin, answer);
         searchedProvider.setName(answer);
     }
     else{
         searchedProvider.setName("");
     }
 
-    std::cout << "  Search by phone ? (Y/N): ";
+    std::cout << "Search by phone ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -68,14 +69,15 @@ void Providers::search(){
     while(answer != "y" && answer != "n");
     if(answer == "y"){
         std::cout << "  Provider phone: ";
-        std::cin >> answer;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(std::cin, answer);
         searchedProvider.setPhone(answer);
     }
     else{
         searchedProvider.setPhone("");
     }
 
-    std::cout << "  Search by address ? (Y/N): ";
+    std::cout << "Search by address ? (Y/N): ";
     do{
         std::cin >> answer;
         answer = str_tolower(answer);
@@ -83,7 +85,8 @@ void Providers::search(){
     while(answer != "y" && answer != "n");
     if(answer == "y"){
         std::cout << "  Provider address: ";
-        std::cin >> answer;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(std::cin, answer);
         searchedProvider.setAddress(answer);
     }
     else{
@@ -106,7 +109,7 @@ void Providers::search(){
         iter++;
     }
 
-    std::cout << "======== Search Results ========" << std::endl;
+    std::cout << "======== Search Results ========" << std::endl << std::endl;
     for(std::list<Provider>::iterator iter = result.begin(); iter != result.end(); iter++){
         iter->display();
         std::cout << std::endl;
@@ -115,31 +118,13 @@ void Providers::search(){
 }
 
 void Providers::edit(){
+    long id;
     Provider provider;
     std::list<Provider>::iterator iter;
 
-    provider.scan();
+    this->display();
 
-    iter = std::find_if(this->providers.begin(), this->providers.end(),
-        [&](Provider currentProvider){
-            return currentProvider.getId() == provider.getId();
-        }
-    );
-
-    if(iter == this->providers.end()){
-        std::cout << "  Provider does not exist!" << std::endl;
-    }
-    else{
-        *iter = provider;
-        std::cout << "  Provider successfully modified!" << std::endl;
-    }
-}
-
-void Providers::remove(ProviderOrders& providerOrdersList){
-    long id;
-    std::list<Provider>::iterator iter;
-
-    std::cout << "  Provider ID: ";
+    std::cout << "Provider ID: ";
     std::cin >> id;
 
     iter = std::find_if(this->providers.begin(), this->providers.end(),
@@ -149,14 +134,39 @@ void Providers::remove(ProviderOrders& providerOrdersList){
     );
 
     if(iter == this->providers.end()){
-        std::cout << "  Provider does not exist!" << std::endl;
+        std::cout << "Provider does not exist!" << std::endl;
+    }
+    else{
+        provider.setId(id);
+        provider.scan();
+        *iter = provider;
+        std::cout << "Provider successfully modified!" << std::endl;
+    }
+}
+
+void Providers::remove(ProviderOrders& providerOrdersList){
+    long id;
+    std::list<Provider>::iterator iter;
+
+    this->display();
+    std::cout << "Provider ID: ";
+    std::cin >> id;
+
+    iter = std::find_if(this->providers.begin(), this->providers.end(),
+        [&](Provider currentProvider){
+            return currentProvider.getId() == id;
+        }
+    );
+
+    if(iter == this->providers.end()){
+        std::cout << "Provider does not exist!" << std::endl;
     }
     else{
         providerOrdersList.removeByProvider(iter->getId());
 
         this->providers.erase(iter);
 
-        std::cout << "  Provider successfully deleted!" << std::endl;
+        std::cout << "Provider successfully deleted!" << std::endl;
     }
 
 }
