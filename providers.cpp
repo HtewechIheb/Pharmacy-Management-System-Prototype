@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <cctype>
 #include <fstream>
-#include "provider.h"
 #include "general.h"
 #include "providers.h"
 
@@ -22,6 +21,7 @@ void Providers::display(){
 void Providers::add(){
     Provider provider;
     provider.scan();
+    provider.setId(this->generateId());
     this->providers.push_back(provider);
     std::cout << "  Provider successfully added!" << std::endl;
 }
@@ -95,7 +95,7 @@ void Providers::search(){
     std::list<Provider>::iterator last = this->providers.end();
 
     while((iter = std::find_if(iter, last,
-        [&searchedProvider](Provider provider){
+        [&](Provider provider){
             return (searchedProvider.getId() == -1 || searchedProvider.getId() == provider.getId())
                     && (searchedProvider.getName() == "" || str_tolower(searchedProvider.getName()) == str_tolower(provider.getName()))
                     && (searchedProvider.getPhone() == "" || str_tolower(searchedProvider.getPhone()) == str_tolower(provider.getPhone()))
@@ -121,7 +121,7 @@ void Providers::edit(){
     provider.scan();
 
     iter = std::find_if(this->providers.begin(), this->providers.end(),
-        [&provider](Provider currentProvider){
+        [&](Provider currentProvider){
             return currentProvider.getId() == provider.getId();
         }
     );
@@ -129,29 +129,56 @@ void Providers::edit(){
     if(iter == this->providers.end()){
         std::cout << "  Provider does not exist!" << std::endl;
     }
-
-    *iter = provider;
-    std::cout << "  Provider successfully modified!" << std::endl;
+    else{
+        *iter = provider;
+        std::cout << "  Provider successfully modified!" << std::endl;
+    }
 }
 
-void Providers::remove(){
+void Providers::remove(ProviderOrders& providerOrdersList){
     long id;
+    std::list<Provider>::iterator iter;
 
     std::cout << "  Provider ID: ";
     std::cin >> id;
 
-    this->providers.remove_if(
-        [id](Provider currentProvider){
+    iter = std::find_if(this->providers.begin(), this->providers.end(),
+        [&](Provider currentProvider){
             return currentProvider.getId() == id;
         }
     );
 
-    std::cout << "  Provider successfully deleted!" << std::endl;
+    if(iter == this->providers.end()){
+        std::cout << "  Provider does not exist!" << std::endl;
+    }
+    else{
+        providerOrdersList.removeByProvider(iter->getId());
+
+        this->providers.erase(iter);
+
+        std::cout << "  Provider successfully deleted!" << std::endl;
+    }
+
+}
+
+long Providers::generateId(){
+    long id = 0;
+    for(std::list<Provider>::iterator iter = this->providers.begin(); iter != this->providers.end(); iter++){
+        if(iter->getId() > id){
+            id = iter->getId();
+        }
+    }
+
+    return id + 1;
 }
 
 Provider* Providers::findById(long id){
     std::list<Provider>::iterator iter;
-    iter = std::find_if(this->providers.begin(), this->providers.end(), [=](Provider provider) { return provider.getId() == id; });
+    iter = std::find_if(this->providers.begin(), this->providers.end(),
+        [&](Provider provider) {
+            return provider.getId() == id;
+        }
+    );
     if(iter != this->providers.end()){
         return &(*iter);
     }

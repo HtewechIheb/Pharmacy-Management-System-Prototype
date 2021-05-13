@@ -1,11 +1,11 @@
+#ifndef MEDICINE_H
+#define MEDICINE_H
+
 #include <string>
 #include <map>
 #include <ctime>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
-
-#ifndef MEDICINE_H
-#define MEDICINE_H
 
 enum class Type {
     LIQUID,
@@ -48,8 +48,6 @@ public:
 template<class T>
 T enumScan(std::map<T, std::string>);
 
-std::time_t dateScan();
-
 class Medicine {
     friend class boost::serialization::access;
     template<class Archive>
@@ -85,8 +83,8 @@ public:
     double getPrice();
     std::time_t getCreationDate();
     std::time_t getConsumptionDelay();
-    std::tm* getCreationDateAsStruct();
-    std::tm* getConsumptionDelayAsStruct();
+    std::tm getCreationDateAsStruct();
+    std::tm getConsumptionDelayAsStruct();
     std::string getCreationDateAsString();
     std::string getConsumptionDelayAsString();
 

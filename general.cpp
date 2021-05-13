@@ -22,7 +22,6 @@ std::time_t dateScan(){
     std::cout << "  Year: ";
     std::cin >> date.tm_year;
     date.tm_year -= 1900;
-    std::time_t test = std::mktime(&date);
 
     return std::mktime(&date);
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include "general.h"
 #include "medicine.h"
 
 MedicineEnumMaps::MedicineEnumMaps(){
@@ -23,11 +24,11 @@ MedicineEnumMaps::MedicineEnumMaps(){
 }
 
 std::map<Type, std::string> MedicineEnumMaps::getTypeMap(){
-    return typeMap;
+    return this->typeMap;
 }
 
 std::map<Category, std::string> MedicineEnumMaps::getCategoryMap(){
-    return categoryMap;
+    return this->categoryMap;
 }
 
 Medicine::Medicine(std::string name, Type type, Category category, double price, std::time_t creationDate, std::time_t consumptionDelay){
@@ -52,20 +53,6 @@ void Medicine::display(){
     std::cout << "Consumption Delay: " << this->getConsumptionDelayAsString() << std::endl;
 }
 
-template<class T>
-T enumScan(std::map<T, std::string> Tmap){
-    int enumChoice;
-
-    for(int typeIter = 1; typeIter != static_cast<int>(T::LAST); typeIter++){
-        std::cout << "  " << typeIter << ": " << Tmap[static_cast<T>(typeIter)] << std::endl;
-    }
-    do{
-        std::cin >> enumChoice;
-    }
-    while(enumChoice < 1 || enumChoice >= static_cast<int>(T::LAST));
-    return static_cast<T>(enumChoice);
-}
-
 void Medicine::scan(){
     MedicineEnumMaps medicineEnumMaps;
 
@@ -83,6 +70,20 @@ void Medicine::scan(){
     this->creationDate = dateScan();
     std::cout << "Medicine Consumption Delay: " << std::endl;
     this->consumptionDelay = dateScan();
+}
+
+template<class T>
+T enumScan(std::map<T, std::string> Tmap){
+    int enumChoice;
+
+    for(int typeIter = 1; typeIter != static_cast<int>(T::LAST); typeIter++){
+        std::cout << "  " << typeIter << ": " << Tmap[static_cast<T>(typeIter)] << std::endl;
+    }
+    do{
+        std::cin >> enumChoice;
+    }
+    while(enumChoice < 1 || enumChoice >= static_cast<int>(T::LAST));
+    return static_cast<T>(enumChoice);
 }
 
 void Medicine::deliveryScan(){
@@ -130,23 +131,23 @@ std::time_t Medicine::getConsumptionDelay(){
     return this->consumptionDelay;
 }
 
-std::tm* Medicine::getCreationDateAsStruct(){
-    return std::gmtime(&this->creationDate);
+std::tm Medicine::getCreationDateAsStruct(){
+    return *std::localtime(&this->creationDate);
 };
 
-std::tm* Medicine::getConsumptionDelayAsStruct(){
-    return std::gmtime(&this->consumptionDelay);
+std::tm Medicine::getConsumptionDelayAsStruct(){
+    return *std::localtime(&this->consumptionDelay);
 };
 
 std::string Medicine::getCreationDateAsString(){
     char dateString[100];
-    std::strftime(dateString, sizeof(dateString), "%d/%m/%Y", gmtime(&this->creationDate));
+    std::strftime(dateString, sizeof(dateString), "%d/%m/%Y", localtime(&this->creationDate));
     return dateString;
 };
 
 std::string Medicine::getConsumptionDelayAsString(){
     char dateString[100];
-    std::strftime(dateString, sizeof(dateString), "%d/%m/%Y", gmtime(&this->consumptionDelay));
+    std::strftime(dateString, sizeof(dateString), "%d/%m/%Y", localtime(&this->consumptionDelay));
     return dateString;
 };
 

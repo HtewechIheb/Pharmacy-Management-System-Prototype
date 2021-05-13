@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <cctype>
 #include <fstream>
-#include "providerOrder.h"
 #include "general.h"
 #include "providerOrders.h"
 
@@ -19,28 +18,33 @@ void ProviderOrders::display(){
     std::cout << "-------------------------------------" << std::endl;
 }
 
-void ProviderOrders::deliver(Medicines& medicines){
+void ProviderOrders::deliver(Medicines& medicinesList){
     long id;
     std::list<ProviderOrder>::iterator providerOrder;
 
     std::cout << "  Order ID: ";
     do{
         std::cin >> id;
-        providerOrder = std::find_if(this->providerOrders.begin(), this->providerOrders.end(), [=](ProviderOrder currentProviderOrder) { return currentProviderOrder.getId() == id;});
+        providerOrder = std::find_if(this->providerOrders.begin(), this->providerOrders.end(),
+            [&](ProviderOrder currentProviderOrder) {
+                return currentProviderOrder.getId() == id;
+            }
+        );
     }
     while(providerOrder == this->providerOrders.end());
 
-    providerOrder->deliver(medicines);
+    providerOrder->deliver(medicinesList);
 }
 
-void ProviderOrders::add(Providers providers){
+void ProviderOrders::add(Providers providersList){
     ProviderOrder providerOrder;
-    providerOrder.scan(providers);
+    providerOrder.scan(providersList);
+    providerOrder.setId(this->generateId());
     this->providerOrders.push_back(providerOrder);
     std::cout << "  Provider order successfully added!" << std::endl;
 }
 
-void ProviderOrders::search(Providers providers){
+void ProviderOrders::search(Providers providersList){
     std::string answer;
     long id;
     std::string medicineName;
@@ -110,11 +114,11 @@ void ProviderOrders::search(Providers providers){
     while(answer != "y" && answer != "n");
     if(answer == "y"){
         std::cout << "  Provider (Select ID): "<< std::endl;
-        providers.display();
+        providersList.display();
         do{
             std::cin >> providerId;
         }
-        while(providers.findById(providerId) == nullptr);
+        while(providersList.findById(providerId) == nullptr);
     }
     else{
         providerId = -1;
@@ -126,8 +130,15 @@ void ProviderOrders::search(Providers providers){
 
     while((iter = std::find_if(iter, last,
         [&](ProviderOrder providerOrder){
+            std::map<std::string, int> providerOrderMedicines;
+
+            providerOrderMedicines = providerOrder.getMedicines();
             return (id == -1 || id == providerOrder.getId())
-                    && (medicineName == "" || std::find_if(providerOrder.getMedicines().begin(), providerOrder.getMedicines().end(), [&](std::pair<std::string, int> medicineEntry) { return str_tolower(medicineName) == str_tolower(medicineEntry.first); }) != providerOrder.getMedicines().end())
+                    && (medicineName == "" || std::find_if(providerOrderMedicines.begin(), providerOrderMedicines.end(),
+                            [&](std::pair<std::string, int> medicineEntry) {
+                                return str_tolower(medicineName) == str_tolower(medicineEntry.first);
+                            }
+                        ) != providerOrderMedicines.end())
                     && (providerId == -1 || providerId == providerOrder.getProvider().getId())
                     && (delivered == -1 || static_cast<bool>(delivered) == providerOrder.getDelivered());
         })) != last)
@@ -144,14 +155,14 @@ void ProviderOrders::search(Providers providers){
     std::cout << "-------------------------------" << std::endl;
 }
 
-void ProviderOrders::edit(Providers providers){
+void ProviderOrders::edit(Providers providersList){
     ProviderOrder providerOrder;
     std::list<ProviderOrder>::iterator iter;
 
-    providerOrder.scan(providers);
+    providerOrder.scan(providersList);
 
     iter = std::find_if(this->providerOrders.begin(), this->providerOrders.end(),
-        [&providerOrder](ProviderOrder currentProviderOrder){
+        [&](ProviderOrder currentProviderOrder){
             return currentProviderOrder.getId() == providerOrder.getId();
         }
     );
@@ -159,24 +170,52 @@ void ProviderOrders::edit(Providers providers){
     if(iter == this->providerOrders.end()){
         std::cout << "  Provider order does not exist!" << std::endl;
     }
-
-    *iter = providerOrder;
-    std::cout << "  Provider order successfully modified!" << std::endl;
+    else{
+        *iter = providerOrder;
+        std::cout << "  Provider order successfully modified!" << std::endl;
+    }
 }
 
 void ProviderOrders::remove(){
     long id;
+    std::list<ProviderOrder>::iterator iter;
 
     std::cout << "  Provider order ID: ";
     std::cin >> id;
 
-    this->providerOrders.remove_if(
-        [id](ProviderOrder currentProviderOrder){
+    iter = std::find_if(this->providerOrders.begin(), this->providerOrders.end(),
+        [&](ProviderOrder currentProviderOrder){
             return currentProviderOrder.getId() == id;
         }
     );
 
-    std::cout << "  Provider order successfully deleted!" << std::endl;
+    if(iter == this->providerOrders.end()){
+        std::cout << "  Provider order does not exist!" << std::endl;
+    }
+    else{
+        this->providerOrders.erase(iter);
+
+        std::cout << "  Provider order successfully deleted!" << std::endl;
+    }
+}
+
+long ProviderOrders::generateId(){
+    long id = 0;
+    for(std::list<ProviderOrder>::iterator iter = this->providerOrders.begin(); iter != this->providerOrders.end(); iter++){
+        if(iter->getId() > id){
+            id = iter->getId();
+        }
+    }
+
+    return id + 1;
+}
+
+void ProviderOrders::removeByProvider(long providerId){
+    this->providerOrders.remove_if(
+        [&](ProviderOrder providerOrder){
+            return providerOrder.getProvider().getId() == providerId;
+        }
+    );
 }
 
 void ProviderOrders::readFromFile(){

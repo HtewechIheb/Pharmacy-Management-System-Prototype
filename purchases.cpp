@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <cctype>
 #include <fstream>
-#include "purchase.h"
 #include "general.h"
 #include "purchases.h"
 
@@ -22,6 +21,7 @@ void Purchases::display(){
 void Purchases::add(Medicines& medicinesList){
     Purchase purchase;
     purchase.scan(medicinesList);
+    purchase.setId(this->generateId());
     this->purchases.push_back(purchase);
     std::cout << "  Purchase successfully added!" << std::endl;
 }
@@ -103,7 +103,11 @@ void Purchases::search(){
 
             purchaseMedicines = purchase.getMedicines();
             return (id == -1 || id == purchase.getId())
-                    && (medicineName == "" || std::find_if(purchaseMedicines.begin(), purchaseMedicines.end(), [&](Medicine medicine) { return str_tolower(medicineName) == str_tolower(medicine.getName()); }) != purchaseMedicines.end())
+                    && (medicineName == "" || std::find_if(purchaseMedicines.begin(), purchaseMedicines.end(),
+                            [&](Medicine medicine) {
+                                return str_tolower(medicineName) == str_tolower(medicine.getName());
+                            }
+                        ) != purchaseMedicines.end())
                     && (total == -1 || total == purchase.getTotal())
                     && (date == static_cast<std::time_t>(-1) || date == purchase.getDate());
         })) != last)
@@ -130,12 +134,16 @@ void Purchases::edit(Medicines& medicinesList){
 
     std::cout << "  Purchase ID: ";
     std::cin >> id;
-    iter = std::find_if(this->purchases.begin(), this->purchases.end(), [&](Purchase purchase) { purchase.display(); return id == purchase.getId(); });
-    purchaseMedicines = iter->getMedicines();
+    iter = std::find_if(this->purchases.begin(), this->purchases.end(),
+        [&](Purchase purchase) {
+            return id == purchase.getId();
+        }
+    );
     if(iter == this->purchases.end()){
         std::cout << "  Purchase does not exist!" << std::endl;
     }
     else{
+        purchaseMedicines = iter->getMedicines();
         for(std::list<Medicine>::iterator medIter = purchaseMedicines.begin(); medIter != purchaseMedicines.end(); medIter++){
             medicinesList.add(*medIter);
         }
@@ -146,7 +154,7 @@ void Purchases::edit(Medicines& medicinesList){
         do{
             do{
                 std::cin >> answer;
-                medicine = medicinesList.findById(std::stoi(answer, nullptr, 10));
+                medicine = medicinesList.findById(std::stol(answer, nullptr, 10));
             }
             while(medicine == nullptr);
             iter->addMedicine(*medicine);
@@ -175,12 +183,17 @@ void Purchases::remove(Medicines& medicinesList){
 
     std::cout << "  Purchase ID: ";
     std::cin >> id;
-    iter = std::find_if(this->purchases.begin(), this->purchases.end(), [&](Purchase purchase) { return id == purchase.getId(); });
-    purchaseMedicines = iter->getMedicines();
+    iter = std::find_if(this->purchases.begin(), this->purchases.end(),
+        [&](Purchase purchase) {
+            return id == purchase.getId();
+        }
+    );
+
     if(iter == this->purchases.end()){
         std::cout << "  Purchase does not exist!" << std::endl;
     }
     else{
+        purchaseMedicines = iter->getMedicines();
         do{
             std::cout << "  Return medicines to storage ? (Y/N):";
             std::cin >> answer;
@@ -197,6 +210,17 @@ void Purchases::remove(Medicines& medicinesList){
 
         std::cout << "  Purchase successfully deleted!" << std::endl;
     }
+}
+
+long Purchases::generateId(){
+    long id = 0;
+    for(std::list<Purchase>::iterator iter = this->purchases.begin(); iter != this->purchases.end(); iter++){
+        if(iter->getId() > id){
+            id = iter->getId();
+        }
+    }
+
+    return id + 1;
 }
 
 void Purchases::readFromFile(){

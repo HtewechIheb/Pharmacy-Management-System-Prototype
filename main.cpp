@@ -14,6 +14,8 @@ using namespace std;
 
 int main()
 {
+    /************************* TEST CODE *******************************/
+
     time_t creationDate = time(NULL);
     struct tm buffer = *gmtime(&creationDate);
     buffer.tm_mon += 3;
@@ -75,5 +77,7 @@ int main()
     //meds.search();
     //temp = meds.search(-1, "Minoxidil", Type::CAPSULES, Category::SEDATIVE);
     //std::for_each(temp.begin(), temp.end(), [](Medicine medicine) {medicine.display();});
+
+
     return 0;
 }

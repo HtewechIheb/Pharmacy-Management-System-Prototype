@@ -1,12 +1,12 @@
+#ifndef MEDICINES_H
+#define MEDICINES_H
+
 #include <list>
 #include <string>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/list.hpp>
 #include "medicine.h"
-
-#ifndef MEDICINES_H
-#define MEDICINES_H
 
 class Medicines {
     std::list<Medicine> medicines;
@@ -20,15 +20,19 @@ public:
     Medicines() { };
     ~Medicines() { };
     Medicines(std::list<Medicine>);
+
+    // User interactive methods
     void display();
     void add();
     void search();
     void edit();
     void remove();
-    long generateId();
+    //
+
     void readFromFile();
     void writeToFile();
 
+    long generateId();
     void add(Medicine);
     void remove(long);
     Medicine* findById(long);

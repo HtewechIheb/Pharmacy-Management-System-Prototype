@@ -1,10 +1,9 @@
 #include <iostream>
-#include <algorithm>
-#include <cctype>
 #include <fstream>
-#include "medicine.h"
-#include "medicines.h"
+#include <cctype>
+#include <algorithm>
 #include "general.h"
+#include "medicines.h"
 
 Medicines::Medicines(std::list<Medicine> medicines){
     this->medicines = medicines;
@@ -22,6 +21,7 @@ void Medicines::display(){
 void Medicines::add(){
     Medicine medicine;
     medicine.scan();
+    medicine.setId(this->generateId());
     this->medicines.push_back(medicine);
     std::cout << "  Medicine successfully added!" << std::endl;
 }
@@ -98,7 +98,7 @@ void Medicines::search(){
     if(answer == "y"){
         std::cout << "  Medicine price: ";
         std::cin >> answer;
-        searchedMedicine.setPrice(std::stoi(answer, nullptr, 10));
+        searchedMedicine.setPrice(std::stod(answer, nullptr));
     }
     else{
         searchedMedicine.setPrice(-1);
@@ -138,7 +138,7 @@ void Medicines::search(){
     std::list<Medicine>::iterator last = this->medicines.end();
 
     while((iter = std::find_if(iter, last,
-        [&searchedMedicine](Medicine medicine){
+        [&](Medicine medicine){
             return (searchedMedicine.getId() == -1 || searchedMedicine.getId() == medicine.getId())
                     && (searchedMedicine.getName() == "" || str_tolower(searchedMedicine.getName()) == str_tolower(medicine.getName()))
                     && (searchedMedicine.getType() == Type::NONE || searchedMedicine.getType() == medicine.getType())
@@ -167,7 +167,7 @@ void Medicines::edit(){
     medicine.scan();
 
     iter = std::find_if(this->medicines.begin(), this->medicines.end(),
-        [&medicine](Medicine currentMedicine){
+        [&](Medicine currentMedicine){
             return currentMedicine.getId() == medicine.getId();
         }
     );
@@ -175,42 +175,33 @@ void Medicines::edit(){
     if(iter == this->medicines.end()){
         std::cout << "  Medicine does not exist!" << std::endl;
     }
-
-    *iter = medicine;
-    std::cout << "  Medicine successfully modified!" << std::endl;
+    else{
+        *iter = medicine;
+        std::cout << "  Medicine successfully modified!" << std::endl;
+    }
 }
 
 void Medicines::remove(){
     long id;
+    std::list<Medicine>::iterator iter;
 
     std::cout << "  Medicine ID: ";
     std::cin >> id;
 
-    this->medicines.remove_if(
-        [id](Medicine currentMedicine){
+    iter = std::find_if(this->medicines.begin(), this->medicines.end(),
+        [&](Medicine currentMedicine){
             return currentMedicine.getId() == id;
         }
     );
 
-    std::cout << "  Medicine successfully deleted!" << std::endl;
-}
-
-Medicine* Medicines::findById(long id){
-    std::list<Medicine>::iterator iter;
-    iter = std::find_if(this->medicines.begin(), this->medicines.end(), [id](Medicine medicine) {return id == medicine.getId();});
-    if(iter != this->medicines.end()){
-        return &(*iter);
+    if(iter == this->medicines.end()){
+        std::cout << "  Medicine does not exist!" << std::endl;
     }
-    return nullptr;
-}
+    else{
+        this->medicines.erase(iter);
 
-Medicine* Medicines::findByName(std::string name){
-    std::list<Medicine>::iterator iter;
-    iter = std::find_if(this->medicines.begin(), this->medicines.end(), [name](Medicine medicine) {return str_tolower(medicine.getName()) == str_tolower(name);});
-    if(iter != this->medicines.end()){
-        return &(*iter);
+        std::cout << "  Medicine successfully deleted!" << std::endl;
     }
-    return nullptr;
 }
 
 long Medicines::generateId(){
@@ -228,6 +219,39 @@ void Medicines::add(Medicine medicine){
     this->medicines.push_back(medicine);
 }
 
+void Medicines::remove(long id){
+    std::list<Medicine>::iterator iter = std::find_if(this->medicines.begin(), this->medicines.end(), [=](Medicine medicine) { return id == medicine.getId(); });
+    if(iter != this->medicines.end()){
+        this->medicines.erase(iter);
+    }
+}
+
+Medicine* Medicines::findById(long id){
+    std::list<Medicine>::iterator iter;
+    iter = std::find_if(this->medicines.begin(), this->medicines.end(),
+        [&](Medicine medicine) {
+            return id == medicine.getId();
+        }
+    );
+    if(iter != this->medicines.end()){
+        return &(*iter);
+    }
+    return nullptr;
+}
+
+Medicine* Medicines::findByName(std::string name){
+    std::list<Medicine>::iterator iter;
+    iter = std::find_if(this->medicines.begin(), this->medicines.end(),
+        [&](Medicine medicine) {
+            return str_tolower(medicine.getName()) == str_tolower(name);
+        }
+    );
+    if(iter != this->medicines.end()){
+        return &(*iter);
+    }
+    return nullptr;
+}
+
 void Medicines::readFromFile(){
     std::ifstream file;
     file.open("medicines.bin", std::ifstream::in | std::ifstream::binary);
@@ -235,13 +259,6 @@ void Medicines::readFromFile(){
     if(file.is_open()){
         boost::archive::text_iarchive inputArchive(file);
         inputArchive >> this->medicines;
-    }
-}
-
-void Medicines::remove(long id){
-    std::list<Medicine>::iterator iter = std::find_if(this->medicines.begin(), this->medicines.end(), [=](Medicine medicine) { return id == medicine.getId(); });
-    if(iter != this->medicines.end()){
-        this->medicines.erase(iter);
     }
 }
 

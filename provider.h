@@ -1,9 +1,9 @@
+#ifndef PROVIDER_H
+#define PROVIDER_H
+
 #include <string>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
-
-#ifndef PROVIDER_H
-#define PROVIDER_H
 
 class Provider {
     friend class boost::serialization::access;
