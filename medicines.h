@@ -30,6 +30,8 @@ public:
     void writeToFile();
 
     void add(Medicine);
+    void remove(long);
+    Medicine* findById(long);
     Medicine* findByName(std::string);
 };
 

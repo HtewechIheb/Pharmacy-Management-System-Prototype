@@ -195,6 +195,15 @@ void Medicines::remove(){
     std::cout << "  Medicine successfully deleted!" << std::endl;
 }
 
+Medicine* Medicines::findById(long id){
+    std::list<Medicine>::iterator iter;
+    iter = std::find_if(this->medicines.begin(), this->medicines.end(), [id](Medicine medicine) {return id == medicine.getId();});
+    if(iter != this->medicines.end()){
+        return &(*iter);
+    }
+    return nullptr;
+}
+
 Medicine* Medicines::findByName(std::string name){
     std::list<Medicine>::iterator iter;
     iter = std::find_if(this->medicines.begin(), this->medicines.end(), [name](Medicine medicine) {return str_tolower(medicine.getName()) == str_tolower(name);});
@@ -226,6 +235,13 @@ void Medicines::readFromFile(){
     if(file.is_open()){
         boost::archive::text_iarchive inputArchive(file);
         inputArchive >> this->medicines;
+    }
+}
+
+void Medicines::remove(long id){
+    std::list<Medicine>::iterator iter = std::find_if(this->medicines.begin(), this->medicines.end(), [=](Medicine medicine) { return id == medicine.getId(); });
+    if(iter != this->medicines.end()){
+        this->medicines.erase(iter);
     }
 }
 

@@ -14,10 +14,11 @@
 				<Compiler>
 					<Add option="-std=c++14" />
 					<Add option="-g" />
-					<Add directory="boost_1_76_0" />
+					<Add directory="C:/boost/include/boost-1_66" />
 				</Compiler>
 				<Linker>
-					<Add directory="boost_1_76_0" />
+					<Add library="C:/boost/lib/libboost_serialization-mgw63-mt-d-x32-1_66.a" />
+					<Add directory="C:/boost" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -37,6 +38,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="ProviderOrder.cpp" />
+		<Unit filename="ProviderOrder.h" />
+		<Unit filename="Purchase.cpp" />
+		<Unit filename="Purchase.h" />
+		<Unit filename="general.cpp" />
+		<Unit filename="general.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="medicine.cpp" />
 		<Unit filename="medicine.h" />
@@ -44,8 +51,12 @@
 		<Unit filename="medicines.h" />
 		<Unit filename="provider.cpp" />
 		<Unit filename="provider.h" />
+		<Unit filename="providerOrders.cpp" />
+		<Unit filename="providerOrders.h" />
 		<Unit filename="providers.cpp" />
 		<Unit filename="providers.h" />
+		<Unit filename="purchases.cpp" />
+		<Unit filename="purchases.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -7,6 +7,8 @@
 #include "providers.h"
 #include "providerOrder.h"
 #include "providerOrders.h"
+#include "Purchase.h"
+#include "Purchases.h"
 
 using namespace std;
 
@@ -46,8 +48,8 @@ int main()
     temp.push_back(med3);
     temp.push_back(med4);
     temp.push_back(med5);*/
-    Providers pros(temp);
-    pros.display();
+    //Providers pros(temp);
+    //pros.display();
 
 
 
@@ -56,11 +58,12 @@ int main()
     meds.readFromFile();
     meds.display();
 
-    ProviderOrders proOrds;
-    proOrds.add(pros);
-    proOrds.display();
-    proOrds.deliver(meds);
+    Purchases purs;
+    purs.add(meds);
+    purs.add(meds);
     meds.display();
+    purs.display();
+    purs.search();
     //proOrds.search(pros);
     //meds.display();
     //meds.add();

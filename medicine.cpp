@@ -66,19 +66,6 @@ T enumScan(std::map<T, std::string> Tmap){
     return static_cast<T>(enumChoice);
 }
 
-std::time_t dateScan(){
-    std::tm date = {};
-    std::cout << "  Day: ";
-    std::cin >> date.tm_mday;
-    std::cout << "  Month: ";
-    std::cin >> date.tm_mon;
-    std::cout << "  Year: ";
-    std::cin >> date.tm_year;
-    date.tm_year -= 1900;
-
-    return std::mktime(&date);
-}
-
 void Medicine::scan(){
     MedicineEnumMaps medicineEnumMaps;
 
@@ -135,19 +122,19 @@ double Medicine::getPrice(){
     return this->price;
 }
 
-time_t Medicine::getCreationDate(){
+std::time_t Medicine::getCreationDate(){
     return this->creationDate;
 }
 
-time_t Medicine::getConsumptionDelay(){
+std::time_t Medicine::getConsumptionDelay(){
     return this->consumptionDelay;
 }
 
-struct tm* Medicine::getCreationDateAsStruct(){
+std::tm* Medicine::getCreationDateAsStruct(){
     return std::gmtime(&this->creationDate);
 };
 
-struct tm* Medicine::getConsumptionDelayAsStruct(){
+std::tm* Medicine::getConsumptionDelayAsStruct(){
     return std::gmtime(&this->consumptionDelay);
 };
 

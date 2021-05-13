@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1620838683 source:g:\engineering\c++\tp6\pharmacymanagementsystem\main.cpp
+1620864157 source:g:\engineering\c++\tp6\pharmacymanagementsystem\main.cpp
 	<iostream>
 	<ctime>
 	<algorithm>
@@ -9,8 +9,10 @@
 	"providers.h"
 	"providerOrder.h"
 	"providerOrders.h"
+	"Purchase.h"
+	"Purchases.h"
 
-1620838086 g:\engineering\c++\tp6\pharmacymanagementsystem\medicines.h
+1620856841 g:\engineering\c++\tp6\pharmacymanagementsystem\medicines.h
 	<list>
 	<string>
 	<boost/archive/text_oarchive.hpp>
@@ -18,7 +20,7 @@
 	<boost/serialization/list.hpp>
 	"medicine.h"
 
-1620838141 source:g:\engineering\c++\tp6\pharmacymanagementsystem\medicines.cpp
+1620857487 source:g:\engineering\c++\tp6\pharmacymanagementsystem\medicines.cpp
 	<iostream>
 	<algorithm>
 	<cctype>
@@ -34,7 +36,7 @@
 	<boost/archive/text_iarchive.hpp>
 	<boost/archive/text_oarchive.hpp>
 
-1620838377 source:g:\engineering\c++\tp6\pharmacymanagementsystem\medicine.cpp
+1620855864 source:g:\engineering\c++\tp6\pharmacymanagementsystem\medicine.cpp
 	<iostream>
 	"medicine.h"
 
@@ -7961,8 +7963,9 @@
 	<boost/archive/text_iarchive.hpp>
 	<boost/archive/text_oarchive.hpp>
 
-1620823462 g:\engineering\c++\tp6\pharmacymanagementsystem\general.h
+1620856635 g:\engineering\c++\tp6\pharmacymanagementsystem\general.h
 	<string>
+	<ctime>
 
 1620831772 source:g:\engineering\c++\tp6\pharmacymanagementsystem\providers.cpp
 	<iostream>
@@ -7981,7 +7984,8 @@
 	<boost/serialization/list.hpp>
 	"provider.h"
 
-1620823408 source:g:\engineering\c++\tp6\pharmacymanagementsystem\general.cpp
+1620866105 source:g:\engineering\c++\tp6\pharmacymanagementsystem\general.cpp
+	<iostream>
 	"general.h"
 
 1620838656 g:\engineering\c++\tp6\pharmacymanagementsystem\providerorder.h
@@ -8028,7 +8032,7 @@
 	<boost/serialization/is_bitwise_serializable.hpp>
 	<boost/mpl/and.hpp>
 
-1620838288 source:g:\engineering\c++\tp6\pharmacymanagementsystem\providerorders.cpp
+1620838697 source:g:\engineering\c++\tp6\pharmacymanagementsystem\providerorders.cpp
 	<iostream>
 	<algorithm>
 	<cctype>
@@ -8036,4 +8040,36 @@
 	"providerOrder.h"
 	"general.h"
 	"providerOrders.h"
+
+1620865961 source:g:\engineering\c++\tp6\pharmacymanagementsystem\purchase.cpp
+	<iostream>
+	<cctype>
+	<ctime>
+	<algorithm>
+	"Purchase.h"
+
+1620863695 g:\engineering\c++\tp6\pharmacymanagementsystem\purchase.h
+	<map>
+	"general.h"
+	"medicines.h"
+	<boost/archive/text_oarchive.hpp>
+	<boost/archive/text_iarchive.hpp>
+	<boost/serialization/map.hpp>
+
+1620860472 g:\engineering\c++\tp6\pharmacymanagementsystem\purchases.h
+	<list>
+	<string>
+	<boost/archive/text_oarchive.hpp>
+	<boost/archive/text_iarchive.hpp>
+	<boost/serialization/list.hpp>
+	"purchase.h"
+
+1620864130 source:g:\engineering\c++\tp6\pharmacymanagementsystem\purchases.cpp
+	<iostream>
+	<algorithm>
+	<cctype>
+	<fstream>
+	"purchase.h"
+	"general.h"
+	"purchases.h"
 
