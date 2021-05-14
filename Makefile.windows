@@ -18,12 +18,12 @@ LIBDIR =
 LIB = 
 LDFLAGS = 
 
-INC_DEBUG = $(INC) -IC:\boost\include\boost-1_66
+INC_DEBUG = $(INC) -Iboost\include\boost-1_66
 CFLAGS_DEBUG = $(CFLAGS) -std=c++14 -g
 RESINC_DEBUG = $(RESINC)
 RCFLAGS_DEBUG = $(RCFLAGS)
-LIBDIR_DEBUG = $(LIBDIR) -LC:\boost
-LIB_DEBUG = $(LIB)C:\boost\lib\libboost_serialization-mgw63-mt-d-x32-1_66.a
+LIBDIR_DEBUG = $(LIBDIR) -Lboost
+LIB_DEBUG = $(LIB)boost\lib\libboost_serialization-mgw63-mt-d-x32-1_66.a
 LDFLAGS_DEBUG = $(LDFLAGS)
 OBJDIR_DEBUG = obj\\Debug
 DEP_DEBUG = 
